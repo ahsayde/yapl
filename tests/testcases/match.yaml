@@ -1,0 +1,150 @@
+id: match-statment
+policy:
+  match:
+    field: metadata.namespace
+    operator: equal
+    value: default
+  rules:
+  - condition:
+      expr: true
+      operator: equal
+      value: true
+    result: test
+tests:
+- id: test-matching
+  input:
+    metadata:
+      namespace: default
+  result:
+    passed: true
+- id: test-unmatching
+  input:
+    metadata:
+      namespace: test
+  result:
+    ignored: true
+
+---
+
+id: match-statment-with-not
+policy:
+  match:
+    not:
+      field: metadata.namespace
+      operator: equal
+      value: default
+  rules:
+  - condition:
+      expr: true
+      operator: equal
+      value: true
+    result: test
+tests:
+- id: test-matching
+  input:
+    metadata:
+      namespace: test
+  result:
+    passed: true
+- id: test-unmatching
+  input:
+    metadata:
+      namespace: default
+  result:
+    ignored: true
+
+---
+
+id: match-statment-with-and
+policy:
+  match:
+    and:
+    - field: metadata.name
+      operator: equal
+      value: app
+    - field: metadata.namespace
+      operator: equal
+      value: default
+  rules:
+  - condition:
+      expr: true
+      operator: equal
+      value: true
+    result: test
+tests:
+- id: test-matching-1
+  input:
+    metadata:
+      name: app
+      namespace: default
+  result:
+    passed: true
+- id: test-unmatching-1
+  input:
+    metadata:
+      name: app
+      namespace: test
+  result:
+    ignored: true
+- id: test-unmatching-2
+  input:
+    metadata:
+      name: test
+      namespace: default
+  result:
+    ignored: true
+- id: test-unmatching-3
+  input:
+    metadata:
+      name: test
+      namespace: test
+  result:
+    ignored: true
+
+---
+
+id: match-statment-with-or
+policy:
+  match:
+    or:
+    - field: metadata.name
+      operator: equal
+      value: app
+    - field: metadata.namespace
+      operator: equal
+      value: default
+  rules:
+  - condition:
+      expr: true
+      operator: equal
+      value: true
+    result: test
+tests:
+- id: test-matching-1
+  input:
+    metadata:
+      name: app
+      namespace: default
+  result:
+    passed: true
+- id: test-matching-2
+  input:
+    metadata:
+      name: app
+      namespace: test
+  result:
+    passed: true
+- id: test-matching-3
+  input:
+    metadata:
+      name: test
+      namespace: default
+  result:
+    passed: true
+- id: test-unmatching-1
+  input:
+    metadata:
+      name: test
+      namespace: test
+  result:
+    ignored: true

@@ -1,0 +1,106 @@
+id: check-statment
+policy:
+  rules:
+  - condition:
+      field: metadata.namespace
+      operator: equal
+      value: default
+    result: namespace must be default
+tests:
+- id: field-passing-check
+  input:
+    metadata:
+      namespace: default
+  result:
+    passed: true
+- id: field-failing-check
+  input:
+    metadata:
+      namespace: test
+  result:
+    failed: true
+    errors:
+    - namespace must be default
+- id: field-failing-check-2
+  input:
+    metadata:
+  result:
+    failed: true
+    errors:
+    - namespace must be default
+
+---
+
+id: check-statment-2
+policy:
+  rules:
+  - when:
+      field: metadata.name
+      operator: equal
+      value: app
+    condition:
+      field: metadata.namespace
+      operator: equal
+      value: default
+    result: namespace must be default
+tests:
+- id: field-passing-check
+  input:
+    metadata:
+      name: app
+      namespace: default
+  result:
+    passed: true
+- id: field-passing-check
+  input:
+    metadata:
+      name: test
+      namespace: default
+  result:
+    passed: true
+- id: field-passing-check
+  input:
+    metadata:
+      name: app
+      namespace: test
+  result:
+    failed: true
+    errors:
+    - namespace must be default
+
+
+# id: check-statment-2
+# policy:
+#   rules:
+#   - condition:
+#       expr: default
+#       operator: equal
+#       value: default
+#     result: namespace must be default
+# tests:
+# - id: field-passing-check
+#   input:
+#     metadata:
+#       namespace: default
+#   result:
+#     passed: true
+
+# ---
+
+# id: check-statment-2
+# policy:
+#   rules:
+#   - condition:
+#       expr: ${ .Params.test | upper }
+#       operator: equal
+#       value: DEFAULT
+#     result: namespace must be default
+# tests:
+# - id: field-passing-check
+#   input:
+#     metadata:
+#       namespace: default
+#   params:
+#     test: default
+#   result:
+#     passed: true

@@ -1,0 +1,16 @@
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+policies-service
+__debug_bin
+*.test
+*.out
+bin/
+coverage.txt
+coverage.html
+input.yaml
+rule.yaml
+rule.json
+.vscode
