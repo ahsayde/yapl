@@ -2,6 +2,8 @@ package renderer
 
 import (
 	"bytes"
+	"fmt"
+	"strings"
 	"text/template"
 
 	"gopkg.in/yaml.v3"
@@ -17,6 +19,13 @@ var (
 		Funcs(processors).
 		Option("missingkey=error").
 		Delims(leftDelim, rightDelim)
+
+	replacer = strings.NewReplacer(
+		leftDelim,
+		fmt.Sprintf("%s toYaml (", leftDelim),
+		rightDelim,
+		fmt.Sprintf(") %s", rightDelim),
+	)
 )
 
 type Renderable struct {
@@ -44,7 +53,6 @@ func (r *Renderable) init(value interface{}) error {
 			return err
 		}
 	}
-
 	return nil
 }
 
@@ -58,6 +66,11 @@ func newRenderable(value interface{}) (*Renderable, error) {
 }
 
 func (r *Renderable) UnmarshalYAML(n *yaml.Node) error {
+	if n.Kind == yaml.ScalarNode {
+		if strings.HasPrefix(n.Value, leftDelim) && strings.HasSuffix(n.Value, rightDelim) {
+			n.Value = replacer.Replace(n.Value)
+		}
+	}
 	var value interface{}
 	err := n.Decode(&value)
 	if err != nil {

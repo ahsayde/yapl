@@ -5,6 +5,8 @@ import (
 	"math"
 	"strings"
 	"time"
+
+	"gopkg.in/yaml.v3"
 )
 
 var (
@@ -41,6 +43,8 @@ var (
 		"second":  second,
 		// types processors
 		"bool": boolean,
+		// converters
+		"toYaml": toYaml,
 	}
 )
 
@@ -89,4 +93,12 @@ func boolean(s string) (bool, error) {
 	default:
 		return false, fmt.Errorf("cannot convert %s to boolean", s)
 	}
+}
+
+func toYaml(in interface{}) string {
+	raw, err := yaml.Marshal(in)
+	if err != nil {
+		return ""
+	}
+	return strings.TrimSuffix(string(raw), "\n")
 }
