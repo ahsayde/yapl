@@ -1,0 +1,5 @@
+site_name: YAPL
+docs_dir: docs
+site_dir: /tmp/docs
+theme:
+  name: material
