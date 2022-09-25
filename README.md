@@ -8,7 +8,7 @@
 
 ## What ?
 
-Write policies to enforce security and best practices with [Yaml](https://en.wikipedia.org/wiki/YAML) language.
+Write policies with [Yaml](https://en.wikipedia.org/wiki/YAML) language.
 
 ## Why ?
 
@@ -20,7 +20,7 @@ Write policies to enforce security and best practices with [Yaml](https://en.wik
 
 ## How ?
 
-See docs [here](https://ahsayde.github.io/yapl)
+See the docs [here](https://ahsayde.github.io/yapl)
 
 
 ## Playground
