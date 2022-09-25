@@ -1,5 +1,28 @@
 site_name: YAPL
 docs_dir: docs
-site_dir: /tmp/docs
+site_dir: gh-pages
 theme:
   name: material
+  features:
+  - navigation.expand
+
+nav:
+- Getting Started: README.md
+- Policy Syntax:
+  - syntax/README.md
+  - syntax/statments.md
+  - syntax/contexts.md
+  - syntax/operators.md
+  - syntax/functions.md
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+extra_css:
+- stylesheets/extra.css
+
+repo_url: https://github.com/ahsayde/yapl
+remote_branch: gh-pages
