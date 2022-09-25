@@ -6,7 +6,7 @@ import (
 )
 
 type Rule struct {
-	When      *NestedCondition     `json:"when" yaml:"when"`
+	When      *LogicalCondition    `json:"when" yaml:"when"`
 	Condition *Condition           `json:"condition" yaml:"condition"`
 	Result    *renderer.Renderable `json:"result" yaml:"result"`
 }

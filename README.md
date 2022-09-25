@@ -15,7 +15,7 @@ Write policies with [Yaml](https://en.wikipedia.org/wiki/YAML) language.
 - :v: Simple
 - :fire: Powerful
 - :rocket: Lightweight
-- :octocat: Opensource
+- :octocat: Open-source
 
 
 ## How ?

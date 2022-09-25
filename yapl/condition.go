@@ -157,16 +157,16 @@ func (c *Condition) validate() []parserError {
 	return result
 }
 
-type NestedCondition struct {
-	Not        *NestedCondition  `json:"not,omitempty" yaml:"not,omitempty"`
-	And        []NestedCondition `json:"and,omitempty" yaml:"and,omitempty"`
-	Or         []NestedCondition `json:"or,omitempty" yaml:"or,omitempty"`
+type LogicalCondition struct {
+	Not        *LogicalCondition  `json:"not,omitempty" yaml:"not,omitempty"`
+	And        []LogicalCondition `json:"and,omitempty" yaml:"and,omitempty"`
+	Or         []LogicalCondition `json:"or,omitempty" yaml:"or,omitempty"`
 	*Condition `json:",inline,omitempty" yaml:",inline,omitempty"`
 }
 
-func (nc *NestedCondition) Eval(ctx *Context, input *parser.Node) (bool, error) {
-	if len(nc.And) > 0 {
-		for _, condition := range nc.And {
+func (lc *LogicalCondition) Eval(ctx *Context, input *parser.Node) (bool, error) {
+	if len(lc.And) > 0 {
+		for _, condition := range lc.And {
 			ok, err := condition.Eval(ctx, input)
 			if err != nil {
 				return false, err
@@ -177,8 +177,8 @@ func (nc *NestedCondition) Eval(ctx *Context, input *parser.Node) (bool, error) 
 		}
 		return true, nil
 	}
-	if len(nc.Or) > 0 {
-		for _, condition := range nc.Or {
+	if len(lc.Or) > 0 {
+		for _, condition := range lc.Or {
 			ok, err := condition.Eval(ctx, input)
 			if err != nil {
 				return false, err
@@ -189,15 +189,15 @@ func (nc *NestedCondition) Eval(ctx *Context, input *parser.Node) (bool, error) 
 		}
 		return false, nil
 	}
-	if nc.Not != nil {
-		ok, err := nc.Not.Eval(ctx, input)
+	if lc.Not != nil {
+		ok, err := lc.Not.Eval(ctx, input)
 		if err != nil {
 			return false, err
 		}
 		return !ok, nil
 	}
 
-	failures, err := nc.Condition.Eval(ctx, input)
+	failures, err := lc.Condition.Eval(ctx, input)
 	if err != nil {
 		return false, err
 	}
@@ -205,35 +205,35 @@ func (nc *NestedCondition) Eval(ctx *Context, input *parser.Node) (bool, error) 
 	return failures == nil, nil
 }
 
-func (ns *NestedCondition) validate() []parserError {
+func (lc *LogicalCondition) validate() []parserError {
 	var result []parserError
 
-	if ns.And == nil && ns.Or == nil && ns.Not == nil && ns.Condition == nil {
+	if lc.And == nil && lc.Or == nil && lc.Not == nil && lc.Condition == nil {
 		result = append(result, parserError{
 			msg: "invalid condition",
 		})
 	}
 
-	for i := range ns.And {
-		if errs := ns.And[i].validate(); errs != nil {
+	for i := range lc.And {
+		if errs := lc.And[i].validate(); errs != nil {
 			result = append(result, errs...)
 		}
 	}
 
-	for i := range ns.Or {
-		if errs := ns.Or[i].validate(); errs != nil {
+	for i := range lc.Or {
+		if errs := lc.Or[i].validate(); errs != nil {
 			result = append(result, errs...)
 		}
 	}
 
-	if ns.Not != nil {
-		if errs := ns.Not.validate(); errs != nil {
+	if lc.Not != nil {
+		if errs := lc.Not.validate(); errs != nil {
 			result = append(result, errs...)
 		}
 	}
 
-	if ns.Condition != nil {
-		if errs := ns.Condition.validate(); errs != nil {
+	if lc.Condition != nil {
+		if errs := lc.Condition.validate(); errs != nil {
 			result = append(result, errs...)
 		}
 	}

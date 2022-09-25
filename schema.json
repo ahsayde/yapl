@@ -56,7 +56,7 @@
 				}
 			}
 		},
-		"nested_condition": {
+		"logical_condition": {
 			"oneOf": [
 				{
 					"type": "object",
@@ -67,7 +67,7 @@
 						"and": {
 							"type": "array",
 							"items": {
-								"$ref": "#/definitions/nested_condition"
+								"$ref": "#/definitions/logical_condition"
 							}
 						}
 					}
@@ -81,7 +81,7 @@
 						"or": {
 							"type": "array",
 							"items": {
-								"$ref": "#/definitions/nested_condition"
+								"$ref": "#/definitions/logical_condition"
 							}
 						}
 					}
@@ -93,7 +93,7 @@
 					],
 					"properties": {
 						"not": {
-							"$ref": "#/definitions/nested_condition"
+							"$ref": "#/definitions/logical_condition"
 						}
 					}
 				},
@@ -105,10 +105,10 @@
 	},
 	"properties": {
 		"match": {
-			"$ref": "#/definitions/nested_condition"
+			"$ref": "#/definitions/logical_condition"
 		},
 		"exclude": {
-			"$ref": "#/definitions/nested_condition"
+			"$ref": "#/definitions/logical_condition"
 		},
 		"rules": {
 			"type": "array",
@@ -121,7 +121,7 @@
 				],
 				"properties": {
 					"when": {
-						"$ref": "#/definitions/nested_condition"
+						"$ref": "#/definitions/logical_condition"
 					},
 					"condition": {
 						"$ref": "#/definitions/condition"

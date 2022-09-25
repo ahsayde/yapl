@@ -6,8 +6,8 @@ import (
 
 type Policy struct {
 	Metadata map[string]interface{} `json:"metadata,omitempty" yaml:"metadata,omitempty"`
-	Match    *NestedCondition       `json:"match,omitempty" yaml:"match,omitempty"`
-	Exclude  *NestedCondition       `json:"exclude,omitempty" yaml:"exclude,omitempty"`
+	Match    *LogicalCondition      `json:"match,omitempty" yaml:"match,omitempty"`
+	Exclude  *LogicalCondition      `json:"exclude,omitempty" yaml:"exclude,omitempty"`
 	Rules    []Rule                 `json:"rules" yaml:"rules"`
 }
 
