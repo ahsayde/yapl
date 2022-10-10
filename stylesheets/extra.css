@@ -1,0 +1,15 @@
+
+.md-grid {
+    max-width: 1500px;
+    /* width: 100%;
+    max-width: none;
+    padding: 0px 100px; */
+}
+
+.md-nav {
+    font-size: 19px;
+}
+
+h2 {
+    color: var(--md-primary-fg-color)
+}
