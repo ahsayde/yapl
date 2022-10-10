@@ -2,18 +2,32 @@ package yapl
 
 import (
 	"github.com/ahsayde/yapl/internal/parser"
+	"github.com/ahsayde/yapl/internal/renderer"
 )
 
 type Policy struct {
-	Metadata map[string]interface{} `json:"metadata,omitempty" yaml:"metadata,omitempty"`
-	Match    *LogicalCondition      `json:"match,omitempty" yaml:"match,omitempty"`
-	Exclude  *LogicalCondition      `json:"exclude,omitempty" yaml:"exclude,omitempty"`
-	Rules    []Rule                 `json:"rules" yaml:"rules"`
+	Metadata map[string]interface{}         `json:"metadata,omitempty" yaml:"metadata,omitempty"`
+	Match    *LogicalCondition              `json:"match,omitempty" yaml:"match,omitempty"`
+	Exclude  *LogicalCondition              `json:"exclude,omitempty" yaml:"exclude,omitempty"`
+	Globals  map[string]renderer.Renderable `json:"globals,omitempty" yaml:"globals,omitempty"`
+	Rules    []Rule                         `json:"rules" yaml:"rules"`
 }
 
 func (p *Policy) Eval(input, params map[string]interface{}) (*Result, error) {
 	ctx := newContext(input, params)
 	node := parser.Parse(ctx.Input)
+
+	if p.Globals != nil {
+		globals := make(map[string]interface{})
+		for k, v := range p.Globals {
+			value, err := v.Render(ctx)
+			if err != nil {
+				return nil, err
+			}
+			globals[k] = value
+		}
+		ctx.Globals = globals
+	}
 
 	if p.Match != nil {
 		ok, err := p.Match.Eval(ctx, node)

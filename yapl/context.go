@@ -6,10 +6,11 @@ import (
 )
 
 type Context struct {
-	Input  interface{}
-	Params map[string]interface{}
-	Env    map[string]string
-	Cond   ConditionResult
+	Input   interface{}
+	Params  map[string]interface{}
+	Globals map[string]interface{}
+	Env     map[string]string
+	Cond    ConditionResult
 }
 
 func newContext(input, params map[string]interface{}) *Context {

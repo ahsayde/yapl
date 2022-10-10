@@ -1,0 +1,26 @@
+id: check-statment
+policy:
+  globals:
+    namespace: ${ .Input.metadata.namespace }
+  rules:
+  - condition:
+      expr: ${ .Globals.namespace }
+      operator: equal
+      value: default
+    result: namespace must be default
+tests:
+- id: field-passing-check
+  input:
+    metadata:
+      namespace: default
+  result:
+    passed: true
+- id: field-failing-check
+  input:
+    metadata:
+      namespace: test
+  result:
+    failed: true
+    errors:
+    - namespace must be default
+---
