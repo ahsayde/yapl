@@ -69,7 +69,7 @@ func (n *Node) find(path []string) ([]*Node, error) {
 	if n.Type == Object {
 		item := n.mapItems[path[0]]
 		if item == nil {
-			return []*Node{{}}, nil
+			return nil, nil
 		}
 		return item.find(path[1:])
 	} else if n.Type == Array {
@@ -94,7 +94,7 @@ func (n *Node) find(path []string) ([]*Node, error) {
 			return n.listItems[int(index)].find(path[1:])
 		}
 	}
-	return []*Node{{}}, nil
+	return nil, nil
 }
 
 func lookup(in interface{}, parent *Node, path string, index int) *Node {

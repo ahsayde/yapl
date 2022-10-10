@@ -41,7 +41,7 @@ func TestParserFind(t *testing.T) {
 			name:     "scalar-not-found",
 			input:    map[string]interface{}{"my-key": true},
 			key:      "my-key-2",
-			expected: nil,
+			expected: (*Node)(nil),
 		},
 		{
 			name: "map-scalar-string",
@@ -116,7 +116,7 @@ func TestParserFind(t *testing.T) {
 				},
 			},
 			key:      "parent.child.not-found",
-			expected: nil,
+			expected: (*Node)(nil),
 		},
 	}
 
@@ -126,7 +126,11 @@ func TestParserFind(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
-		assert.Equal(t, test.expected, field.Value, "testcase #%d failed", i)
+		if field != nil {
+			assert.Equal(t, test.expected, field.Value, "testcase #%d failed", i)
+		} else {
+			assert.Equal(t, test.expected, field, "testcase #%d failed", i)
+		}
 	}
 }
 

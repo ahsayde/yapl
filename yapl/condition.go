@@ -72,6 +72,10 @@ func (c *Condition) Eval(ctx *Context, input *parser.Node) ([]ConditionResult, e
 			return nil, err
 		}
 
+		if fields == nil {
+			return nil, fmt.Errorf("field %s not found", condition.Field)
+		}
+
 		for i := range fields {
 			ctx.Cond.Field = fields[i]
 			value := fields[i].Value

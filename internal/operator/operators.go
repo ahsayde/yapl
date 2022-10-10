@@ -218,6 +218,10 @@ func GetOperator(name string) Operator {
 }
 
 func convertToNumber(value interface{}) (float64, error) {
+	if value == nil {
+		return 0, nil
+	}
+
 	val := reflect.ValueOf(value)
 	if val.Type().ConvertibleTo(floatType) {
 		return val.Convert(floatType).Float(), nil
