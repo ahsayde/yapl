@@ -45,6 +45,8 @@ var (
 		"bool": boolean,
 		// converters
 		"toYaml": toYaml,
+		// conditions
+		"ternary": ternary,
 	}
 )
 
@@ -101,4 +103,11 @@ func toYaml(in interface{}) string {
 		return ""
 	}
 	return strings.TrimSuffix(string(raw), "\n")
+}
+
+func ternary(v1, v2 interface{}, cond bool) interface{} {
+	if cond {
+		return v1
+	}
+	return v2
 }

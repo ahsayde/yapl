@@ -46,3 +46,7 @@ Here is the list of the builtin functions which can be used in [expressions](#ex
 ### Type Conversion
 
 - `bool`
+
+### Helpers
+
+- `ternary`
